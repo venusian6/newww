@@ -5,6 +5,11 @@ pipeline {
         nodejs 'node'
     }
 
+    environment {
+  MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
+}
+
+
     stages {
         stage('Checking the working') {
             steps {
@@ -56,7 +61,10 @@ pipeline {
 
         stage('Unit testing'){
             steps{
-                sh 'npm test'
+                withCredentials([usernamePassword(credentialsId: '', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                      sh 'npm test'
+                }
+                junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
             }
         }
 
