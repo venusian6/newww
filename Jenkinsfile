@@ -6,18 +6,16 @@ pipeline {
     }
 
     environment {
-  MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
-  MONGO_DB_CREDS=credentials('mongo-db-credentials')
-  MONGO_USERNAME=credentials('mongo-db-username-without-pair')
-  MONGO_PASSWORD=credentials('mongo-db-pass-without-pair')
-}
+        MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
+        MONGO_DB_CREDS=credentials('mongo-db-credentials')
+        MONGO_USERNAME=credentials('mongo-db-username-without-pair')
+        MONGO_PASSWORD=credentials('mongo-db-pass-without-pair')
+    }
 
-options {
-  disableResume()
-  disableConcurrentBuilds abortPrevious: true
-}
-
-
+    options {
+        disableResume()
+        disableConcurrentBuilds abortPrevious: true
+    }
 
     stages {
         stage('Checking the working') {
@@ -29,17 +27,17 @@ options {
                 '''
             }
         }
-        
+
         stage('Install dependencies') {
             options {
-                        timestamps()
-                    }
+                timestamps()
+            }
 
             steps {
                 sh 'npm install --no-audit'
             }
         }
-        
+
         stage('Dependency Check') {
             parallel {
                 stage('NPM Dependency Audit') {
@@ -60,43 +58,39 @@ options {
                         --disableYarnAudit
                         ''', nvdCredentialsId: 'NVD_API_KEY', odcInstallation: 'OWASP-DEPCHECK-12'
 
-                       dependencyCheckPublisher failedTotalCritical: 1, failedTotalHigh: 2, failedTotalLow: 90, failedTotalMedium: 4, pattern: 'dependency-check-report.xml', stopBuild: true
-                       
-                       junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'dependency-check-junit.xml'
-                       
-
-                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                    
+                        dependencyCheckPublisher failedTotalCritical: 1, failedTotalHigh: 2, failedTotalLow: 90, failedTotalMedium: 4, pattern: 'dependency-check-report.xml', stopBuild: true
                     }
                 }
             }
         }
 
-        stage('Unit testing'){
-            options{retry(2)}
-            steps{
+        stage('Unit testing') {
+            options {
+                retry(2)
+            }
+            steps {
                 sh 'echo Colon-seperated - $MONGO_DB_CREDS'
                 sh 'echo Username - $MONGO_DB_CREDS_USR'
                 sh 'echo Password -$MONGO_DB_CREDS_PSW'
-                       sh 'npm test'
-                }
-                junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
+                sh 'npm test'
             }
         }
 
-        stage('Code coverage'){
-             steps{
-                  catchError(buildResult: 'SUCCESS', message: 'Oops it will be fixed in future release') {
+        stage('Code coverage') {
+            steps {
+                catchError(buildResult: 'SUCCESS', message: 'Oops it will be fixed in future release') {
                     sh 'npm run coverage'
                 }
-                      
-                }
-                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-
-                
             }
-
         }
+    }
 
+    post {
+        always {
+            junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'coverage/lcov-report', reportFiles: 'index.html', reportName: 'Code Coverage HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'dependency-check-junit.xml'
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+        }
     }
 }
