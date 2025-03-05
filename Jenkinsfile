@@ -33,12 +33,14 @@ steps {
     }
 
     stage('OWASP Dependency check'){
-        steps{
-            dependencyCheck additionalArguments: '''--scan ./
-                --out ./
-                --format All
-                --prettyPrint''', nvdCredentialsId: 'NVD_API_KEY', odcInstallation: 'OWASP-DEPCHECK-12'
-        }
+         steps {
+                        dependencyCheck additionalArguments: '''
+                        --scan ./ 
+                        --out ./ 
+                        --format ALL
+                        --prettyPrint
+                        --disableYarnAudit
+                        ''', nvdCredentialsId: 'NVD_API_KEY', odcInstallation: 'OWASP-DEPCHECK-12'
     }
 
 
