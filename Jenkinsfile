@@ -7,6 +7,9 @@ pipeline {
 
     environment {
   MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
+  MONGO_DB_CREDS credentials('mongo-db-credentials')
+  MONGO_USERNAME=credentials('mongo-db-username-without-pair')
+  MONGO_PASSWORD=credentials('mongo-db-pass-without-pair')
 }
 
 options {
@@ -72,8 +75,10 @@ options {
         stage('Unit testing'){
             options{retry(2)}
             steps{
-                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                      sh 'npm test'
+                sh 'echo Colon-seperated - $MONGO_DB_CREDS'
+                sh 'echo Username - $MONGO_DB_CREDS_USR'
+                sh 'echo Password -$MONGO_DB_CREDS_PSW'
+                       sh 'npm test'
                 }
                 junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
             }
@@ -81,8 +86,7 @@ options {
 
         stage('Code coverage'){
              steps{
-                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
-                   catchError(buildResult: 'SUCCESS', message: 'Oops it will be fixed in future release') {
+                  catchError(buildResult: 'SUCCESS', message: 'Oops it will be fixed in future release') {
                     sh 'npm run coverage'
                 }
                       
