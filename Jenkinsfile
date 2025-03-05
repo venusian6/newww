@@ -9,7 +9,7 @@ nodejs 'node'
 
 stages{
 
-stage{
+stage('Checking the working '){
 
 steps{
 sh '''
