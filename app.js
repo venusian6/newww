@@ -10,8 +10,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "/")));
 app.use(cors());
 
-const mongoose = require("mongoose");
-
 async function connectToDatabase() {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
