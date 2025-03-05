@@ -41,6 +41,8 @@ pipeline {
                         --prettyPrint
                         --disableYarnAudit
                         ''', nvdCredentialsId: 'NVD_API_KEY', odcInstallation: 'OWASP-DEPCHECK-12'
+
+                        dependencyCheckPublisher failedTotalCritical: 1, pattern: 'dependency-check-report.xml', stopBuild: true 
                     }
                 }
             }
