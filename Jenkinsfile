@@ -9,6 +9,12 @@ pipeline {
   MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
 }
 
+options {
+  disableResume()
+  disableConcurrentBuilds abortPrevious: true
+}
+
+
 
     stages {
         stage('Checking the working') {
@@ -64,6 +70,7 @@ pipeline {
         }
 
         stage('Unit testing'){
+            options{retry(2)}
             steps{
                 withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
                       sh 'npm test'
