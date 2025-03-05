@@ -8,22 +8,21 @@ tools   {
 
 stages {
     stage('Checking the working '){
-
 steps {
     sh '''
     node -v
     npm -v
     echo it working right
 '''}
+}
 
     stage('Install dependencies'){
         steps{
-            sh 'npm install --no-audit'
+            sh ' npm install --no-audit'
         }
     }
 
 
 
-}
 }
 }
