@@ -26,8 +26,9 @@ steps {
 
              stage('NPM Dependenct Audit'){
         steps{
-            sh 'npm audit --audit level=critical'
+            sh '''npm audit --audit level=critical
             echo $?
+            '''
         }
     }
 
