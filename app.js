@@ -6,17 +6,17 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 
+// Middleware setup
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "/")));
 app.use(cors());
 
+// MongoDB connection
 async function connectToDatabase() {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       user: process.env.MONGO_USERNAME,
       pass: process.env.MONGO_PASSWORD,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
     });
     console.log("MongoDB Connection Successful");
   } catch (err) {
@@ -26,6 +26,7 @@ async function connectToDatabase() {
 
 connectToDatabase();
 
+// Define Schema
 var Schema = mongoose.Schema;
 
 var dataSchema = new Schema({
@@ -36,32 +37,38 @@ var dataSchema = new Schema({
   velocity: String,
   distance: String,
 });
+
+// Define Model
 var planetModel = mongoose.model("planets", dataSchema);
 
-app.post("/planet", function (req, res) {
-  // console.log("Received Planet ID " + req.body.id)
-  planetModel.findOne(
-    {
-      id: req.body.id,
-    },
-    function (err, planetData) {
-      if (err) {
-        alert(
-          "Ooops, We only have 9 planets and a sun. Select a number from 0 - 9"
-        );
-        res.send("Error in Planet Data");
-      } else {
-        res.send(planetData);
-      }
+// POST route to get planet data
+app.post("/planet", async (req, res) => {
+  try {
+    // Log the ID (you can remove this if not necessary)
+    // console.log("Received Planet ID " + req.body.id);
+
+    // Use async/await to fetch planet data by ID
+    const planetData = await planetModel.findOne({ id: req.body.id });
+
+    // If no planet data is found, send an appropriate message
+    if (!planetData) {
+      return res.status(404).send("No planet found with the given ID");
     }
-  );
+
+    res.send(planetData); // Send the found planet data as the response
+  } catch (err) {
+    console.error("Error in fetching planet data: ", err);
+    res.status(500).send("Error in Planet Data");
+  }
 });
 
+// GET route to serve index.html
 app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "/", "index.html"));
 });
 
-app.get("/os", function (req, res) {
+// GET route to get OS info
+app.get("/os", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send({
     os: OS.hostname(),
@@ -69,20 +76,23 @@ app.get("/os", function (req, res) {
   });
 });
 
-app.get("/live", function (req, res) {
+// GET route to check if the server is live
+app.get("/live", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send({
     status: "live",
   });
 });
 
-app.get("/ready", function (req, res) {
+// GET route to check if the server is ready
+app.get("/ready", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send({
     status: "ready",
   });
 });
 
+// Start the server
 app.listen(3000, () => {
   console.log("Server successfully running on port - " + 3000);
 });
