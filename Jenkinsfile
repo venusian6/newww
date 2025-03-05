@@ -15,10 +15,15 @@ steps {
     echo it working right
 '''}
 }
-
     stage('Install dependencies'){
         steps{
             sh ' npm install --no-audit'
+        }
+    }
+
+    stage('NPM Dependenct Audit'){
+        steps{
+            sh 'npm audit --audit level=critical'
         }
     }
 
