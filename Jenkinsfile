@@ -20,11 +20,11 @@ steps {
             sh ' npm install --no-audit'
         }
     }
-    stage{
+    stage('Dependency Check'){
 
         parallel{
 
-             stage('NPM Dependenct Audit'){
+             stage('NPM Dependency Audit'){
         steps{
             sh '''npm audit --audit level=critical
             echo $?
