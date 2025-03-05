@@ -22,6 +22,10 @@ pipeline {
         }
         
         stage('Install dependencies') {
+            options {
+                        timestamps()
+                    }
+
             steps {
                 sh 'npm install --no-audit'
             }
@@ -61,7 +65,7 @@ pipeline {
 
         stage('Unit testing'){
             steps{
-                withCredentials([usernamePassword(credentialsId: '', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'mongo-db-credentials', passwordVariable: 'MONGO_PASSWORD', usernameVariable: 'MONGO_USERNAME')]) {
                       sh 'npm test'
                 }
                 junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
