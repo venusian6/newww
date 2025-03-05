@@ -7,7 +7,7 @@ pipeline {
 
     environment {
   MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
-  MONGO_DB_CREDS credentials('mongo-db-credentials')
+  MONGO_DB_CREDS=credentials('mongo-db-credentials')
   MONGO_USERNAME=credentials('mongo-db-username-without-pair')
   MONGO_PASSWORD=credentials('mongo-db-pass-without-pair')
 }
