@@ -20,12 +20,34 @@ steps {
             sh ' npm install --no-audit'
         }
     }
+    stage{
 
-    stage('NPM Dependenct Audit'){
+        parallel{
+
+             stage('NPM Dependenct Audit'){
         steps{
             sh 'npm audit --audit level=critical'
+            echo $?
         }
     }
+
+    stage('OWASP Dependency check'){
+        steps{
+            dependencyCheck additionalArguments: '''--scan ./
+                --out ./
+                --format All
+                --prettyPrint''', nvdCredentialsId: 'NVD_API_KEY', odcInstallation: 'OWASP-DEPCHECK-12'
+        }
+    }
+
+
+
+        }
+
+
+    }
+
+   
 
 
 
