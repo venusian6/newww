@@ -211,7 +211,7 @@ EOF
 
 
                 sh ''' 
-                    bash /integration-testing-ec2.sh
+                    bash integration-testing-ec2.sh
                 '''
             }}
         }
