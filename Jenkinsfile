@@ -167,7 +167,7 @@ pipeline {
             steps{
                 script{
 
-                   steps {
+                
     script {
         sshagent(['aws-dev-deploy-ec2-instance']) {
             sh '''
@@ -195,7 +195,7 @@ EOF
             '''
         }
     }
-}
+
 
                 }
                  }
