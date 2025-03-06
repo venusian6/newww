@@ -7,10 +7,10 @@ pipeline {
 
     environment {
         MONGO_URI = "mongodb+srv://harrypotter007007007007:abc@cluster0.c74zw.mongodb.net/superaData"
-        MONGO_DB_CREDS=credentials('mongo-db-credentials')
-        MONGO_USERNAME=credentials('mongo-db-username-without-pair')
-        MONGO_PASSWORD=credentials('mongo-db-pass-without-pair')
-        SONAR_SCANNER_HOME = tool name: 'sonarqube-scanner-7.0.2';
+        MONGO_DB_CREDS = credentials('mongo-db-credentials')
+        MONGO_USERNAME = credentials('mongo-db-username-without-pair')
+        MONGO_PASSWORD = credentials('mongo-db-pass-without-pair')
+        SONAR_SCANNER_HOME = tool name: 'sonarqube-scanner-7.0.2'
     }
 
     options {
@@ -33,7 +33,6 @@ pipeline {
             options {
                 timestamps()
             }
-
             steps {
                 sh 'npm install --no-audit'
             }
@@ -85,23 +84,23 @@ pipeline {
             }
         }
 
-        stage('SAST-SonarQube'){
-
-            steps{
+        stage('SAST-SonarQube') {
+            steps {
                 timeout(time: 60, unit: 'SECONDS') {                
-                withSonarQubeEnv('sonar-qube-server') {
-                sh 'echo $SONAR_SCANNER_HOME'
-                sh '''
-                echo $SONAR_SCANNER_HOME
-                $SONAR_SCANNER_HOME/bin/sonar-scanner \
-                -Dsonar.projectKey=solar-system \
-                -Dsonar.sources=app.js \
-                -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-                '''}
-            }}
-             waitForQualityGate abortPipeline: true
+                    withSonarQubeEnv('sonar-qube-server') {
+                        sh 'echo $SONAR_SCANNER_HOME'
+                        sh '''
+                        echo $SONAR_SCANNER_HOME
+                        $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectKey=solar-system \
+                        -Dsonar.sources=app.js \
+                        -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                        '''
+                    }
+                }
+            }
+            waitForQualityGate abortPipeline: true
         }
-
     }
 
     post {
