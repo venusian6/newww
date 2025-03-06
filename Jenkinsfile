@@ -107,6 +107,19 @@ pipeline {
                 sh 'docker build -t thevenusian/solar:$GIT_COMMIT .'
             }
         }
+
+        stage('Push Image to Registry'){
+            steps{
+                withDockerRegistry(credentialsId: 'docker-hub-credentials', url: '""') {
+                            sh 'docker push thevenusian/solar:$GIT_COMMIT'
+}
+            }
+        }
+
+
+
+
+
         stage('Deploy aws-ec2-devoployment'){
             when {
   branch 'feature/*'
@@ -118,23 +131,23 @@ pipeline {
 
                     sshagent(['aws-dev-deploy-ec2-instance']) {
                         sh '''
-    echo $MONGO_URI
-    echo $MONGO_PASSWORD
-    echo $MONGO_USERNAME
-    echo $GIT_COMMIT
-    ssh -o StrictHostKeyChecking=no ubuntu@13.233.12.246 <<EOF
-    if sudo docker ps -a | grep -q "solar"; then
-        echo "Container found. Stopping..."
-        sudo docker stop "solar" && sudo docker rm "solar"
-        echo "Container stopped and removed."
-    fi
-    sudo docker run --name solar \
-        -e MONGO_URI=$MONGO_URI \
-        -e MONGO_PASSWORD=$MONGO_PASSWORD \
-        -e MONGO_USERNAME=$MONGO_USERNAME \
-        -p 3000:3000 -d thevenusian/solar:$GIT_COMMIT
-EOF
-'''
+                                echo $MONGO_URI
+                                echo $MONGO_PASSWORD
+                                echo $MONGO_USERNAME
+                                echo $GIT_COMMIT
+                                ssh -o StrictHostKeyChecking=no ubuntu@13.233.12.246 <<EOF
+                                if sudo docker ps -a | grep -q "solar"; then
+                                    echo "Container found. Stopping..."
+                                    sudo docker stop "solar" && sudo docker rm "solar"
+                                    echo "Container stopped and removed."
+                                fi
+                                sudo docker run --name solar \
+                                    -e MONGO_URI=$MONGO_URI \
+                                    -e MONGO_PASSWORD=$MONGO_PASSWORD \
+                                    -e MONGO_USERNAME=$MONGO_USERNAME \
+                                    -p 3000:3000 -d thevenusian/solar:$GIT_COMMIT
+                            EOF
+                            '''
 
 
                         }
