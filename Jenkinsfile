@@ -174,6 +174,10 @@ pipeline {
                                 echo $MONGO_USERNAME
                                 echo $GIT_COMMIT
                                 ssh -o StrictHostKeyChecking=no ubuntu@13.233.12.246 <<EOF
+                                 export MONGO_URI=$MONGO_URI
+                export MONGO_PASSWORD=$MONGO_PASSWORD
+                export MONGO_USERNAME=$MONGO_USERNAME
+                export GIT_COMMIT=$GIT_COMMIT
                                 if sudo docker ps -a | grep -q "solar"; then
                                     echo "Container found. Stopping..."
                                     sudo docker stop "solar" && sudo docker rm "solar"
