@@ -101,6 +101,15 @@ pipeline {
                 waitForQualityGate abortPipeline: true
             }
         }
+
+        stage('Docker Image Build'){
+            steps{
+                sh 'docker build -t thevenusian/solar:$GIT_COMMIT'
+            }
+        }
+
+
+
     }
 
     post {
