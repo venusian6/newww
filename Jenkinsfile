@@ -110,7 +110,7 @@ pipeline {
 
         stage('Trivy Vulnerability Scanner'){
             steps{
-                
+                sh 
                 ''' 
                 trivy image thevenusian/solar:$GIT_COMMIT \
                 --severity LOW,MEDIUM,HIGH \
@@ -128,7 +128,6 @@ pipeline {
             post{
                 always{
                     sh '''
-                    
                      trivy convert \
                         --format template --template "@/usr/local/share/trivy/templates/html.tpl" \
                         --output trivy-image-MEDIUM-results.html trivy-image-MEDIUM-results.json
