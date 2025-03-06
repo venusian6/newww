@@ -118,22 +118,20 @@ pipeline {
 
                     sshagent(['aws-dev-deploy-ec2-instance']) {
                         sh '''
+                ssh -i $SSH_KEY -o StrictHostKeyChecking=no ubuntu@13.233.12.246 << 'EOF'
+                if sudo docker ps -a | grep -q "solar"; then
+                    echo "Container found. Stopping..."
+                    sudo docker stop "solar" && sudo docker rm "solar"
+                    echo "Container stopped and removed."
+                fi
+                sudo docker run --name solar \
+                -e MONGO_URI=$MONGO_URI \
+                -e MONGO_PASSWORD=$MONGO_PASSWORD \
+                -e MONGO_USERNAME=$MONGO_USERNAME \
+                -p 3000:3000 -d thevenusian/solar:$GIT_COMMIT
+                EOF
+                '''
 
-                        ssh -o StrictHostKeyChecking=no ubuntu@13.233.12.246 
-                         "
-                         if sudo docker ps -a | grep -q "solar"; then
-                         echo "container found. Stopping..."
-                         sudo docker stop "solar" && sudo docker rm "solar"
-                         echo "Container stopped and removed."
-                         fi 
-                         sudo docker run --name solar\
-                         -e MONGO_URI=$MONGO_URI \
-                         -e MONGO_PASSWORD=$MONGO_PASSWORD \
-                         -e MONGO_USERNAME=$MONGO_USERNAME \
-                         -p 3000:3000 -d thevenusian/solar:$GIT_COMMIT
-                         "
-
-                        '''
                         }
                 }
                  }
