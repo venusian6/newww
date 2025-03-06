@@ -146,6 +146,15 @@ pipeline {
                 }
             }
         }
+        stage('Push Image to Registry'){
+            steps{
+                withDockerRegistry(credentialsId: 'docker-hub-credentials', url: '""') {
+                            sh 'docker push thevenusian/solar:$GIT_COMMIT'
+}
+
+                
+            }
+        }
     }
 
     post {
