@@ -11,6 +11,7 @@ pipeline {
         MONGO_USERNAME = credentials('mongo-db-username-without-pair')
         MONGO_PASSWORD = credentials('mongo-db-pass-without-pair')
         SONAR_SCANNER_HOME = tool name: 'sonarqube-scanner-7.0.2'
+        GITHUB_TOKEN=credentials('github-private')
     }
 
     options {
@@ -196,11 +197,9 @@ EOF
         }
     }
 
-
                 }
                  }
         }
-
         stage('Integration Testing AWS-EC2 '){
              when {
                      branch 'feature/*'
@@ -208,21 +207,45 @@ EOF
             steps {
                 sh 'printenv | grep -i branch'
                 withAWS(credentials:'aws-s3-ec2-lambda-credentials', region: 'ap-south-1') {
-
-
                 sh ''' 
                     bash integration-testing-ec2.sh
                 '''
             }}
         }
+        stage('Kubernetes Update Image Tag'){
 
+            when {
+                branch 'PR*'
+            }
+    steps{
+        git 'git clone -b main https://github.com/venusian6/gitops.git'
+        dir('gitops/kubernetes') {
+                sh '''
+                ----- Replace Docker Tag -----
+                git checkout main
+                git checkout -b feature-$BUILD_ID
+                sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
+                cat deployment.yaml
 
-
-
+                -----Commit and push to feature branch------
+                git config --global user.email "vivektheviperrockss@gmail.com"
+                git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+                git add .
+                git commit -m "Update docker image"
+                git push -u origin feature-$BUILD_ID
+                '''
+}
+    }
+        }
     }
 
     post {
         always {
+            script{
+                if (fileExists('gitops')){
+                    sh 'rm -rf gitops'
+                }
+            }
             junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
             junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'dependency-check-junit.xml'
             junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'trivy-image-MEDIUM-results.xml'
