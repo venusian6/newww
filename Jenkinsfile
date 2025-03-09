@@ -176,7 +176,7 @@ pipeline {
                 echo $MONGO_PASSWORD
                 echo $MONGO_USERNAME
                 echo $GIT_COMMIT
-                ssh -o StrictHostKeyChecking=no ubuntu@13.201.4.170 <<EOF
+                ssh -o StrictHostKeyChecking=no ubuntu@13.203.77.235 <<EOF
                 export MONGO_URI=$MONGO_URI
                 export MONGO_PASSWORD=$MONGO_PASSWORD
                 export MONGO_USERNAME=$MONGO_USERNAME
