@@ -224,13 +224,14 @@ EOF
 
         dir('gitops/kubernetes') {
                 sh '''
-                ----- Replace Docker Tag -----
+                # Replace Docker Tag
                 git checkout main
                 git checkout -b feature-$BUILD_ID
                 sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
                 cat deployment.yaml
 
-                -----Commit and push to feature branch------
+                  # Commit and push to feature branch
+
                 git config --global user.email "vivektheviperrockss@gmail.com"
                 git config --global user.name "venusian6"
                 git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
