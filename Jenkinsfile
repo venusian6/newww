@@ -220,7 +220,8 @@ EOF
                 branch 'PR*'
             }
     steps{
-        git 'git clone https://github.com/venusian6/gitops.git'
+      git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
+
         dir('gitops/kubernetes') {
                 sh '''
                 ----- Replace Docker Tag -----
