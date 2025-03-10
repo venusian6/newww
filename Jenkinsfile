@@ -205,7 +205,7 @@ EOF
                      branch 'feature/*'
                  }
             steps {
-                sh'echo this is stage integration'
+                sh'echo this is stage integrations'
                 sh 'printenv | grep -i branch'
                 withAWS(credentials:'aws-s3-ec2-lambda-credentials', region: 'ap-south-1') {
                 sh ''' 
