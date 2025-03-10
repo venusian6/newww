@@ -220,7 +220,7 @@ EOF
                 branch 'PR*'
             }
     steps{
-        git 'git clone -b main https://github.com/venusian6/gitops.git'
+        git 'git clone https://github.com/venusian6/gitops.git'
         dir('gitops/kubernetes') {
                 sh '''
                 ----- Replace Docker Tag -----
@@ -231,6 +231,7 @@ EOF
 
                 -----Commit and push to feature branch------
                 git config --global user.email "vivektheviperrockss@gmail.com"
+                git config --global user.name "venusian6"
                 git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
                 git add .
                 git commit -m "Update docker image"
