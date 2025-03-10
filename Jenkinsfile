@@ -11,7 +11,7 @@ pipeline {
         MONGO_USERNAME = credentials('mongo-db-username-without-pair')
         MONGO_PASSWORD = credentials('mongo-db-pass-without-pair')
         SONAR_SCANNER_HOME = tool name: 'sonarqube-scanner-7.0.2'
-        GITHUB_TOKEN=credentials('github-private')
+        // GITHUB_TOKEN=credentials('github-private')
     }
 
     options {
@@ -230,7 +230,7 @@ EOF
 
                 -----Commit and push to feature branch------
                 git config --global user.email "vivektheviperrockss@gmail.com"
-                git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+                git remote set-url origin https://$github-private@github.com/venusian6/gitops.git
                 git add .
                 git commit -m "Update docker image"
                 git push -u origin feature-$BUILD_ID
