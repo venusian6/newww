@@ -96,6 +96,7 @@ pipeline {
                         -Dsonar.projectKey=solar-system \
                         -Dsonar.sources=app.js \
                         -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                        -Dsonar.login=${SONAR_TOKEN}
                         '''
                     }
                 }
