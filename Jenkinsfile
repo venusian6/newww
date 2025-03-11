@@ -253,7 +253,7 @@ stage('Kubernetes Update Image Tag') {
     }
     steps {
         script {
-            // Ensure repository is cloned
+            // Ensure repository is clonedd
             if (!fileExists('gitops')) {
                 sh 'git clone https://github.com/venusian6/gitops.git'
             }
