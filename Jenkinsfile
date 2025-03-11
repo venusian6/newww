@@ -233,11 +233,11 @@ EOF
     git pull origin main  # Pull latest changes to avoid conflicts
     git checkout -b feature-$BUILD_ID
     pwd
-    ls-l
     # Replace Docker Tag
     cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
-    cat deployment.yml
+    cat  /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/gitops/kubernetes/deployment.yml
+  
 
     # Commit and push to feature branch
     git config --global user.email "vivektheviperrockss@gmail.com"
