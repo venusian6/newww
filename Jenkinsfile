@@ -214,74 +214,74 @@ EOF
                 '''
             }}
         }
-//         stage('Kubernetes Update Image Tag'){
+        stage('Kubernetes Update Image Tag'){
 
-//             when {
-//                 branch 'PR*'
-//             }
-//     steps{
-//       git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
-
-//       dir('kubernetes') {
-//     sh '''
-//     # Ensure the latest changes are fetched
-//     git checkout main
-//     git pull origin main  # Pull latest changes to avoid conflicts
-//     git checkout -b feature-$BUILD_ID
-
-//     # Replace Docker Tag
-//     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
-//     cat deployment.yaml
-
-//     # Commit and push to feature branch
-//     git config --global user.email "vivektheviperrockss@gmail.com"
-//     git config --global user.name "venusian6"
-//     git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
-//     git add .
-//     git commit -m "Update docker image"
-//     git push -u origin feature-$BUILD_ID
-//     '''
-// }
-
-//     }
-//         }
-stage('Kubernetes Update Image Tag') {
-    when {
-        branch 'PR*'
-    }
-    steps {
-        script {
-            // Clone repo if it doesn't exist
-            if (!fileExists('gitops')) {
-                sh 'git clone https://github.com/venusian6/gitops.git'
+            when {
+                branch 'PR*'
             }
+    steps{
+      git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
-            // Ensure kubernetes directory existss
-            if (!fileExists('gitops/kubernetes')) {
-                error("Error: 'kubernetes' directory not found inside 'gitops'. Check repo structure.")
-            }
+      dir('gitops/kubernetes') {
+    sh '''
+    # Ensure the latest changes are fetched
+    git checkout main
+    git pull origin main  # Pull latest changes to avoid conflicts
+    git checkout -b feature-$BUILD_ID
 
-            dir('gitops/kubernetes') {
-                sh '''
-                git checkout main
-                git pull origin main
-                git checkout -b feature-$BUILD_ID || git checkout feature-$BUILD_ID
-                
-                # Ensure deployment.yaml exists
-                if [ -f "deployment.yaml" ]; then
-                    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
-                    git add deployment.yaml
-                    git commit -m "Update docker image"
-                    git push -u origin feature-$BUILD_ID
-                else
-                    echo "Error: deployment.yaml not found!"
-                    exit 1
-                fi
-                '''
-            }
-        }
-    }
+    # Replace Docker Tag
+    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
+    cat deployment.yaml
+
+    # Commit and push to feature branch
+    git config --global user.email "vivektheviperrockss@gmail.com"
+    git config --global user.name "venusian6"
+    git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+    git add .
+    git commit -m "Update docker image"
+    git push -u origin feature-$BUILD_ID
+    '''
 }
+
+    }
+        }
+// stage('Kubernetes Update Image Tag') {
+//     when {
+//         branch 'PR*'
+//     }
+//     steps {
+//         script {
+//             // Clone repo if it doesn't exist
+//             if (!fileExists('gitops')) {
+//                 sh 'git clone https://github.com/venusian6/gitops.git'
+//             }
+
+//             // Ensure kubernetes directory existss
+//             if (!fileExists('gitops/kubernetes')) {
+//                 error("Error: 'kubernetes' directory not found inside 'gitops'. Check repo structure.")
+//             }
+
+//             dir('gitops/kubernetes') {
+//                 sh '''
+//                 git checkout main
+//                 git pull origin main
+//                 git checkout -b feature-$BUILD_ID || git checkout feature-$BUILD_ID
+                
+//                 # Ensure deployment.yaml exists
+//                 if [ -f "deployment.yaml" ]; then
+//                     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
+//                     git add deployment.yaml
+//                     git commit -m "Update docker image"
+//                     git push -u origin feature-$BUILD_ID
+//                 else
+//                     echo "Error: deployment.yaml not found!"
+//                     exit 1
+//                 fi
+//                 '''
+//             }
+//         }
+//     }
+// }
 
 
     }
