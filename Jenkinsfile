@@ -222,6 +222,8 @@ EOF
     steps{
       git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
+      sh 'pwd'
+
       dir('gitops/kubernetes') {
     sh '''
      # Fix Git Safe Directory Issue
@@ -230,6 +232,8 @@ EOF
     git checkout main
     git pull origin main  # Pull latest changes to avoid conflicts
     git checkout -b feature-$BUILD_ID
+    pwd
+    ls-l
     # Replace Docker Tag
     cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
