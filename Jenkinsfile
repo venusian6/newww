@@ -256,7 +256,7 @@ stage('Kubernetes Update Image Tag') {
                 sh 'git clone https://github.com/venusian6/gitops.git'
             }
 
-            // Ensure kubernetes directory exists
+            // Ensure kubernetes directory existss
             if (!fileExists('gitops/kubernetes')) {
                 error("Error: 'kubernetes' directory not found inside 'gitops'. Check repo structure.")
             }
