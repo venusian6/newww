@@ -214,87 +214,87 @@ EOF
                 '''
             }}
         }
-//         stage('Kubernetes Update Image Tag'){
+        stage('Kubernetes Update Image Tag'){
 
-//             when {
-//                 branch 'PR*'
-//             }
-//     steps{
-//       git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
-
-//       dir('gitops/kubernetes') {
-//     sh '''
-//     # Ensure the latest changes are fetched
-//     git checkout main
-//     git pull origin main  # Pull latest changes to avoid conflicts
-//     git checkout -b feature-$BUILD_ID
-
-//     # Replace Docker Tag
-//     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
-//     cat deployment.yaml
-
-//     # Commit and push to feature branch
-//     git config --global user.email "vivektheviperrockss@gmail.com"
-//     git config --global user.name "venusian6"
-//     git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
-//     git add .
-//     git commit -m "Update docker image"
-//     git push -u origin feature-$BUILD_ID
-//     '''
-// }
-
-//     }
-//         }
-
-
-stage('Kubernetes Update Image Tag') {
-    when {
-        branch 'PR*'
-    }
-    steps {
-        script {
-            // Ensure repository is clonedd
-            if (!fileExists('gitops')) {
-                sh 'git clone https://github.com/venusian6/gitops.git'
+            when {
+                branch 'PR*'
             }
+    steps{
+      git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
-            dir('gitops/kubernetes') {
+      dir('gitops/kubernetes') {
+    sh '''
+    # Ensure the latest changes are fetched
+    git checkout main
+    git pull origin main  # Pull latest changes to avoid conflicts
+    git checkout -b feature-$BUILD_ID
+
+    # Replace Docker Tag
+    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yml
+    cat deployment.yml
+
+    # Commit and push to feature branch
+    git config --global user.email "vivektheviperrockss@gmail.com"
+    git config --global user.name "venusian6"
+    git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+    git add .
+    git commit -m "Update docker image"
+    git push -u origin feature-$BUILD_ID
+    '''
+}
+
+    }
+        }
 
 
-                sh '''
-                    git config --global user.email "vivektheviperrockss@gmail.com"
-                    git config --global user.name "venusian6"
-                    git checkout main
-                    git pull origin main --allow-unrelated-histories || true
+// stage('Kubernetes Update Image Tag') {
+//     when {
+//         branch 'PR*'
+//     }
+//     steps {
+//         script {
+//             // Ensure repository is clonedd
+//             if (!fileExists('gitops')) {
+//                 sh 'git clone https://github.com/venusian6/gitops.git'
+//             }
 
-                    # Resolve conflicts automatically (keeping the remote version)
-                    git reset --hard origin/main
-                    git checkout -b feature-$BUILD_ID
+//             dir('gitops/kubernetes') {
 
-                    # Ensure deployment.yaml exists
-                    if [ ! -f "gitops/kubernetes/deployment.yml" ]; then
-                        echo "Error: deployment.yml not found!"
-                        exit 1
-                    fi
 
-                    # Update image tag in deployment.yaml
-                    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yml
+//                 sh '''
+//                     git config --global user.email "vivektheviperrockss@gmail.com"
+//                     git config --global user.name "venusian6"
+//                     git checkout main
+//                     git pull origin main --allow-unrelated-histories || true
 
-                    # Commit and push
-                    git add gitops/kubernetes/deployment.yml
-                    git commit -m "Update docker image to $GIT_COMMIT"
-                    git push -u origin feature-$BUILD_ID
-'''
+//                     # Resolve conflicts automatically (keeping the remote version)
+//                     git reset --hard origin/main
+//                     git checkout -b feature-$BUILD_ID
+
+//                     # Ensure deployment.yaml exists
+//                     if [ ! -f "gitops/kubernetes/deployment.yl" ]; then
+//                         echo "Error: deployment.yml not found!"
+//                         exit 1
+//                     fi
+
+//                     # Update image tag in deployment.yaml
+//                     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yml
+
+//                     # Commit and push
+//                     git add gitops/kubernetes/deployment.yml
+//                     git commit -m "Update docker image to $GIT_COMMIT"
+//                     git push -u origin feature-$BUILD_ID
+// '''
 
                 
  
 
 
 
-            }
-        }
-    }
-}
+//             }
+//         }
+//     }
+// }
 
 
 
