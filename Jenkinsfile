@@ -288,11 +288,11 @@ EOF
 
     post {
         always {
-            script{
-                if (fileExists('gitops')){
-                    sh 'rm -rf gitops'
-                }
-            }
+            // script{
+            //     if (fileExists('gitops')){
+            //         sh 'rm -rf gitops'
+            //     }
+            // }
             junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'test-results.xml'
             junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'dependency-check-junit.xml'
             junit allowEmptyResults: true, keepProperties: true, stdioRetention: '', testResults: 'trivy-image-MEDIUM-results.xml'
