@@ -237,14 +237,32 @@ EOF
     cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
 
-    # Commit and push to feature branch
-    git config --global user.email "vivektheviperrockss@gmail.com"
-    git config --global user.name "venusian6"
-    git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
-    git add .
-    git commit -m "Update docker image"
-    git push -u origin feature-$BUILD_ID
+
+      # Git Config for Commit
+                        git config --global user.email "vivektheviperrockss@gmail.com"
+                        git config --global user.name "venusian6"
+                        git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+
+                        # Add the modified file explicitly
+                        echo "Manually adding deployment.yml"
+                        git add /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
+
+                        # Check status to confirm the file is staged
+                        echo "Checking Git Status:"
+                        git status
+
+                        # Commit and push changes
+                        git commit -m "Update docker image"
+                        git push -u origin feature-$BUILD_ID
+   
     '''
+    //  # Commit and push to feature branch
+    // git config --global user.email "vivektheviperrockss@gmail.com"
+    // git config --global user.name "venusian6"
+    // git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+    // git add .
+    // git commit -m "Update docker image"
+    // git push -u origin feature-$BUILD_ID
 }
 
     }
