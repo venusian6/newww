@@ -224,6 +224,8 @@ EOF
 
       dir('gitops/kubernetes') {
     sh '''
+     # Fix Git Safe Directory Issue
+            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
     # Ensure the latest changes are fetched
     git checkout main
     git pull origin main  # Pull latest changes to avoid conflicts
