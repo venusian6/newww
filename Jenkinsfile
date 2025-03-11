@@ -232,6 +232,8 @@ EOF
     git checkout -b feature-$BUILD_ID
 
     # Replace Docker Tag
+    ls -l
+    pwd
     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
     cat deployment.yml
 
