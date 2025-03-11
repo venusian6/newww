@@ -251,28 +251,25 @@ stage('Kubernetes Update Image Tag') {
     }
     steps {
         script {
-            // Clone repository into 'gitops' folder if it does not exist
+            // Clone repo if it doesn't exist
             if (!fileExists('gitops')) {
                 sh 'git clone https://github.com/venusian6/gitops.git'
             }
 
-            dir('gitops/kubernetes') {  // Ensure correct directory
+            // Ensure kubernetes directory exists
+            if (!fileExists('gitops/kubernetes')) {
+                error("Error: 'kubernetes' directory not found inside 'gitops'. Check repo structure.")
+            }
+
+            dir('gitops/kubernetes') {
                 sh '''
-                # Ensure the latest changes are fetched
                 git checkout main
                 git pull origin main
                 git checkout -b feature-$BUILD_ID || git checkout feature-$BUILD_ID
-
-                # Ensure deployment.yaml exists before modifying it
+                
+                # Ensure deployment.yaml exists
                 if [ -f "deployment.yaml" ]; then
                     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
-                    echo "Updated deployment.yaml:"
-                    cat deployment.yaml
-
-                    # Commit and push to feature branch
-                    git config --global user.email "vivektheviperrockss@gmail.com"
-                    git config --global user.name "venusian6"
-                    git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
                     git add deployment.yaml
                     git commit -m "Update docker image"
                     git push -u origin feature-$BUILD_ID
@@ -285,6 +282,7 @@ stage('Kubernetes Update Image Tag') {
         }
     }
 }
+
 
     }
 
