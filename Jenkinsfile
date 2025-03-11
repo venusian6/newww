@@ -272,8 +272,8 @@ stage('Kubernetes Update Image Tag') {
                     git checkout -b feature-$BUILD_ID
 
                     # Ensure deployment.yaml exists
-                    if [ ! -f "gitops/kubernetes/deployment.yaml" ]; then
-                        echo "Error: deployment.yaml not found!"
+                    if [ ! -f "gitops/kubernetes/deployment.yml" ]; then
+                        echo "Error: deployment.yml not found!"
                         exit 1
                     fi
 
@@ -281,7 +281,7 @@ stage('Kubernetes Update Image Tag') {
                     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yml
 
                     # Commit and push
-                    git add gitops/kubernetes/deployment.yaml
+                    git add gitops/kubernetes/deployment.yml
                     git commit -m "Update docker image to $GIT_COMMIT"
                     git push -u origin feature-$BUILD_ID
 '''
