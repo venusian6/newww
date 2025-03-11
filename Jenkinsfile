@@ -222,7 +222,7 @@ EOF
     steps{
       git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
-      dir('gitops/kubernetes') {
+      dir('kubernetes') {
     sh '''
     # Ensure the latest changes are fetched
     git checkout main
