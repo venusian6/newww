@@ -278,7 +278,7 @@ stage('Kubernetes Update Image Tag') {
                     fi
 
                     # Update image tag in deployment.yaml
-                    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yaml
+                    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yml
 
                     # Commit and push
                     git add gitops/kubernetes/deployment.yaml
