@@ -222,24 +222,27 @@ EOF
     steps{
       git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
-        dir('gitops/kubernetes') {
-                sh '''
-                # Replace Docker Tag
-                git checkout main
-                git checkout -b feature-$BUILD_ID
-                sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
-                cat deployment.yaml
+      dir('gitops/kubernetes') {
+    sh '''
+    # Ensure the latest changes are fetched
+    git checkout main
+    git pull origin main  # Pull latest changes to avoid conflicts
+    git checkout -b feature-$BUILD_ID
 
-                  # Commit and push to feature branch
+    # Replace Docker Tag
+    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yaml
+    cat deployment.yaml
 
-                git config --global user.email "vivektheviperrockss@gmail.com"
-                git config --global user.name "venusian6"
-                git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
-                git add .
-                git commit -m "Update docker image"
-                git push -u origin feature-$BUILD_ID
-                '''
+    # Commit and push to feature branch
+    git config --global user.email "vivektheviperrockss@gmail.com"
+    git config --global user.name "venusian6"
+    git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+    git add .
+    git commit -m "Update docker image"
+    git push -u origin feature-$BUILD_ID
+    '''
 }
+
     }
         }
     }
