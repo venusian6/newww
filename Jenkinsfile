@@ -259,30 +259,35 @@ stage('Kubernetes Update Image Tag') {
             }
 
             dir('gitops/kubernetes') {
-                
- sh '''
-            git config --global user.email "vivektheviperrockss@gmail.com"
-            git config --global user.name "venusian6"
-            git checkout main
-            git pull origin main --allow-unrelated-histories
-            git checkout -b feature-$BUILD_ID
 
-            # Ensure the Kubernetes directory exists
-            if [ ! -f "gitops/kubernetes/deployment.yaml" ]; then
-                echo "Error: deployment.yaml not found!"
-                exit 1
-            fi
 
-            # Update the image tag
-            sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yaml
-            cat gitops/kubernetes/deployment.yaml
+                sh '''
+                    git config --global user.email "vivektheviperrockss@gmail.com"
+                    git config --global user.name "venusian6"
+                    git checkout main
+                    git pull origin main --allow-unrelated-histories || true
 
-            # Commit and push
-            git add gitops/kubernetes/deployment.yaml
-            git commit -m "Update docker image to $GIT_COMMIT"
-            git push -u origin feature-$BUILD_ID
+                    # Resolve conflicts automatically (keeping the remote version)
+                    git reset --hard origin/main
+                    git checkout -b feature-$BUILD_ID
+
+                    # Ensure deployment.yaml exists
+                    if [ ! -f "gitops/kubernetes/deployment.yaml" ]; then
+                        echo "Error: deployment.yaml not found!"
+                        exit 1
+                    fi
+
+                    # Update image tag in deployment.yaml
+                    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yaml
+
+                    # Commit and push
+                    git add gitops/kubernetes/deployment.yaml
+                    git commit -m "Update docker image to $GIT_COMMIT"
+                    git push -u origin feature-$BUILD_ID
 '''
 
+                
+ 
 
 
 
