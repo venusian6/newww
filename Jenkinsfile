@@ -245,7 +245,7 @@ EOF
 
                                 # Add the modified file explicitly
                                 echo "Manually adding deployment.yml"
-                                git add /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
+                                git add deployment.yml
 
                                 # Check status to confirm the file is staged
                                 echo "Checking Git Status:"
