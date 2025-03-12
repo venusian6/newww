@@ -236,7 +236,7 @@ EOF
             # Replace Docker Tag
             cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
             cd /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes
-            # old-code  sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yml
+            # old-code with old tag  sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yml
             sed -i "s|thevenusian/solar:[a-f0-9]\\{40\\}|thevenusian/solar:$GIT_COMMIT|g" deployment.yml
 
 
