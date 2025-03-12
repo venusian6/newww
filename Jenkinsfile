@@ -275,6 +275,7 @@ EOF
             }
 
             steps{
+                sh 'echo hello'
                 sh '''
                     curl -X POST \
                 -H "Accept: application/vnd.github+json" \
