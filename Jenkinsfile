@@ -240,7 +240,7 @@ EOF
             sed -i "s|thevenusian/solar:[a-f0-9]\\{40\\}|thevenusian/solar:$GIT_COMMIT|g" deployment.yml
 
 
-            # Git Config for Commit
+            # Git Config for Committ
             git config --global user.email "vivektheviperrockss@gmail.com"
             git config --global user.name "venusian6"
             git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
