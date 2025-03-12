@@ -219,53 +219,78 @@ EOF
             when {
                 branch 'PR*'
             }
-    steps{
-      git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
+            steps{
+            git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
-      sh 'pwd'
+            sh 'pwd'
 
-      dir('gitops/kubernetes') {
-    sh '''
-     # Fix Git Safe Directory Issue
-            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
-    # Ensure the latest changes are fetched
-    git checkout main
-    git pull origin main  # Pull latest changes to avoid conflicts
-    git checkout -b feature-$BUILD_ID
-    pwd
-    # Replace Docker Tag
-    cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
-    sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
+            dir('gitops/kubernetes') {
+            sh '''
+            # Fix Git Safe Directory Issue
+                    git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
+            # Ensure the latest changes are fetched
+            git checkout main
+            git pull origin main  # Pull latest changes to avoid conflicts
+            git checkout -b feature-$BUILD_ID
+            pwd
+            # Replace Docker Tag
+            cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
+            sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
 
 
-      # Git Config for Commit
-                        git config --global user.email "vivektheviperrockss@gmail.com"
-                        git config --global user.name "venusian6"
-                        git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+            # Git Config for Commit
+                                git config --global user.email "vivektheviperrockss@gmail.com"
+                                git config --global user.name "venusian6"
+                                git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
 
-                        # Add the modified file explicitly
-                        echo "Manually adding deployment.yml"
-                        git add /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
+                                # Add the modified file explicitly
+                                echo "Manually adding deployment.yml"
+                                git add /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
 
-                        # Check status to confirm the file is staged
-                        echo "Checking Git Status:"
-                        git status
+                                # Check status to confirm the file is staged
+                                echo "Checking Git Status:"
+                                git status
 
-                        # Commit and push changes
-                        git commit -m "Update docker image"
-                        git push -u origin feature-$BUILD_ID
-   
-    '''
-    //  # Commit and push to feature branch
-    // git config --global user.email "vivektheviperrockss@gmail.com"
-    // git config --global user.name "venusian6"
-    // git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
-    // git add .
-    // git commit -m "Update docker image"
-    // git push -u origin feature-$BUILD_ID
-}
+                                # Commit and push changes
+                                git commit -m "Update docker image"
+                                git push -u origin feature-$BUILD_ID
+        
+            '''
+            //  # Commit and push to feature branch
+            // git config --global user.email "vivektheviperrockss@gmail.com"
+            // git config --global user.name "venusian6"
+            // git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+            // git add .
+            // git commit -m "Update docker image"
+            // git push -u origin feature-$BUILD_ID
+        }
 
-    }
+            }
+                }
+
+
+        stage ('Raise PR'){
+            when {
+                branch 'PR/*'
+            }
+
+            steps{
+                sh '''
+                    curl -X POST \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                https://api.github.com/repos/venusian6/gitops/pulls \
+                -d '{
+                    "title": "Merge feature-${BUILD_ID} into main",
+                    "body": "This pull request merges feature-${BUILD_ID} into main.",
+                    "head": "feature-${BUILD_ID}",
+                    "base": "main"
+                }'
+                '''
+
+                }
+
         }
 
 
