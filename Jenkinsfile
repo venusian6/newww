@@ -227,7 +227,7 @@ EOF
             dir('gitops/kubernetes') {
             sh '''
             # Fix Git Safe Directory Issue
-                    git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
+            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
             # Ensure the latest changes are fetched
             git checkout main
             git pull origin main  # Pull latest changes to avoid conflicts
@@ -235,26 +235,28 @@ EOF
             pwd
             # Replace Docker Tag
             cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
-            sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
+            cd /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes
+            # old-code  sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yml
+            sed -i "s|thevenusian/solar:[a-f0-9]\{40\}|thevenusian/solar:$GIT_COMMIT|g" deployment.yml
 
 
             # Git Config for Commit
-                                git config --global user.email "vivektheviperrockss@gmail.com"
-                                git config --global user.name "venusian6"
-                                git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
+            git config --global user.email "vivektheviperrockss@gmail.com"
+            git config --global user.name "venusian6"
+            git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
 
-                                # Add the modified file explicitly
-                                echo "Manually adding deployment.yml"
-                                git add deployment.yml
+            # Add the modified file explicitly
+            echo "Manually adding deployment.yml"
+            git add deployment.yml
 
-                                # Check status to confirm the file is staged
-                                echo "Checking Git Status:"
-                                git status
+            # Check status to confirm the file is staged
+            echo "Checking Git Status:"
+            git status
 
-                                # Commit and push changes
-                                git commit -m "Update docker image"
-                                git push -u origin feature-$BUILD_ID
-        
+            # Commit and push changes
+            git commit -m "Update docker image"
+            git push -u origin feature-$BUILD_ID
+
             '''
             //  # Commit and push to feature branch
             // git config --global user.email "vivektheviperrockss@gmail.com"
