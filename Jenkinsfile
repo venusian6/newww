@@ -259,6 +259,7 @@ EOF
             # Commit and push changes
             git commit -m "Update docker image"
             git push -u origin feature-$BUILD_ID
+            sleep 5
 
             '''
             //  # Commit and push to feature branchh
