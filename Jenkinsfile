@@ -303,6 +303,42 @@ EOF
 
         }
 
+        stage('App ruuning?'){
+
+            when{
+                branch 'PR*'
+            }
+            steps{
+                timeout(time: 1, unit: 'DAYS'){
+                    input message: 'IS the PR Merged and ArgoCD synced?', ok: 'Yes! PR is merged and ArgoCD Application is synced!'
+                }
+
+            }
+
+
+        }
+        stage('DAST - OWASP ZAP '){
+
+            when{
+                branch 'PR*'
+            }
+            steps{
+                sh '''
+                    chmod 777 $(pwd)
+
+                    docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+                    -t http://192.168.49.2:32000/api-docs/ \
+                    -f openapi \
+                    -r zap-report.html \
+                    -w zap-report.md \
+                    -J zap-report.json \
+                    -x zap_xml_report.xml
+                '''
+
+               
+            }
+        }
+
 
 // stage('Kubernetes Update Image Tag') {
 //     when {
