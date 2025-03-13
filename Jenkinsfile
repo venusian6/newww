@@ -318,7 +318,6 @@ EOF
 
         }
         stage('DAST - OWASP ZAP '){
-
             when{
                 branch 'PR*'
             }
