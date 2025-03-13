@@ -281,7 +281,7 @@ EOF
             }
 
             steps{
-                sh 'echo helloo'
+                sh 'echo hello'
                 sh '''
                     curl -X POST \
              curl -X POST \
