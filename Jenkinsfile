@@ -276,7 +276,7 @@ EOF
 
         stage ('Raise PR'){
             when {
-                branch 'PR/*'
+                branch 'PR*'
             }
 
             steps{
