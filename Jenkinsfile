@@ -40,6 +40,9 @@ pipeline {
         }
 
         stage('Dependency Check') {
+             when {
+                branch 'PR*'
+            }
             parallel {
                 stage('NPM Dependency Audit') {
                     steps {
@@ -258,7 +261,7 @@ EOF
             git push -u origin feature-$BUILD_ID
 
             '''
-            //  # Commit and push to feature branch
+            //  # Commit and push to feature branchh
             // git config --global user.email "vivektheviperrockss@gmail.com"
             // git config --global user.name "venusian6"
             // git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
