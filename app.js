@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const app = express();
 const cors = require('cors')
-
+const fs = require('fs').promises;
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
@@ -55,6 +55,20 @@ app.post('/planet',   function(req, res) {
 app.get('/',   async (req, res) => {
     res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
+
+
+
+
+app.get('/api-docs', async (req, res) => {
+    try {
+        const data = await fs.readFile('oas.json', 'utf8');
+        res.json(JSON.parse(data));
+    } catch (err) {
+        console.error('Error reading file:', err);
+        res.status(500).send('Error reading file');
+    }
+});
+
 
 
 app.get('/os',   function(req, res) {
