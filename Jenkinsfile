@@ -262,7 +262,7 @@ EOF
             sleep 5
 
             '''
-            //  # Commit and push to feature branch
+            //  # Commit and push to feature branchh
             // git config --global user.email "vivektheviperrockss@gmail.com"
             // git config --global user.name "venusian6"
             // git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
