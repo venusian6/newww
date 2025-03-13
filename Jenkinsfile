@@ -284,16 +284,19 @@ EOF
                 sh 'echo helloo'
                 sh '''
                     curl -X POST \
-                -H "Accept: application/vnd.github+json" \
-                -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-                -H "X-GitHub-Api-Version: 2022-11-28" \
-                https://api.github.com/repos/venusian6/gitops/pulls \
-                -d '{
-                    "title": "Merge feature-${BUILD_ID} into main",
-                    "body": "This pull request merges feature-${BUILD_ID} into main.",
-                    "head": "feature-${BUILD_ID}",
-                    "base": "main"
-                }'
+             curl -X POST \
+     -H "Accept: application/vnd.github+json" \
+     -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+     -H "X-GitHub-Api-Version: 2022-11-28" \
+     https://api.github.com/repos/venusian6/gitops/pulls \
+     -d '{
+         "title": "Merge feature-'"${BUILD_ID}"' into main",
+         "body": "This pull request merges feature-'"${BUILD_ID}"' into main.",
+         "head": "feature-'"${BUILD_ID}"'",
+         "base": "main"
+     }'
+
+                
                 '''
 
                 }
