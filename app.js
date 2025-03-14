@@ -63,9 +63,11 @@ app.post("/planet", async (req, res) => {
   }
 });
 
+const filePath = path.join(__dirname, "oas.json"); // Ensures correct file path
+
 app.get("/api-docs", async (req, res) => {
   try {
-    const data = await fs.readFile("oas.json", "utf8");
+    const data = await fs.readFile(filePath, "utf8"); // Use absolute path
     res.json(JSON.parse(data));
   } catch (err) {
     console.error("Error reading file:", err);
