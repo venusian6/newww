@@ -328,7 +328,7 @@ EOF
             // Ensure Jenkins user owns the workspace directory
             sh 'sudo chown -R $(id -u):$(id -g) $(pwd)'
 
-            // Run ZAP with proper permissions
+            // Run ZAP with proper permissionss
             sh '''
             docker run --rm \
                 --network=host \
