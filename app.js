@@ -80,7 +80,7 @@ app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "/", "index.html"));
 });
 
-// GET route to get OS info
+// GET route to get OS infoo
 app.get("/os", (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.send({
