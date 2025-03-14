@@ -326,12 +326,10 @@ EOF
               sh '''
     chmod 777 $(pwd)
 
-    docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
-    -t http://192.168.49.2:32000/api-docs/ \
-    -r zap-report.html \
-    -w zap-report.md \
-    -J zap-report.json \
-    -x zap_xml_report.xml
+   docker run --network=host -v $(pwd):/zap/wrk/:rw -u $(id -u):$(id -g) -t ghcr.io/zaproxy/zaproxy:stable \
+    zap-baseline.py -t http://192.168.49.2:32000/api-docs/ \
+    -r zap-report.html -w zap-report.md -J zap-report.json -x zap_xml_report.xml
+
 '''
 
 
