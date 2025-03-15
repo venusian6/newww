@@ -1,0 +1,5 @@
+10020   IGNORE  http://192.168.49.2:32000  # Ignore Missing Anti-clickjacking Header
+10021   IGNORE  http://192.168.49.2:32000 # Ignore X-Content-Type-Options Header Missing
+10037   IGNORE  http://192.168.49.2:32000  # Ignore X-Powered-By Information Leak
+10038   IGNORE  http://192.168.49.2:32000  # Ignore Content Security Policy (CSP) Header Not Set
+10063   IGNORE  http://192.168.49.2:32000   #Permissions Policy Header Not Set

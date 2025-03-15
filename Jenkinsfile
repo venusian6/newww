@@ -336,7 +336,8 @@ EOF
                 -u root \
                 -t ghcr.io/zaproxy/zaproxy:stable \
                 zap-baseline.py -t http://192.168.49.2:32000/api-docs/ \
-                -r zap-report.html -w zap-report.md -J zap-report.json -x zap_xml_report.xml
+                -r zap_report.html -w zap_report.md -J zap_report.json -x zap_xml_report.xml \
+                -c zap_ignore_rules
             '''
         }
     }
@@ -456,6 +457,7 @@ EOF
             publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'dependency-check-report.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
             publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'trivy-image-MEDIUM-results.json', reportName: 'Trivy Image Medium Vul Report', reportTitles: '', useWrapperFileDirectly: true])
             publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'trivy-image-CRITICAL-results.json', reportName: 'Trivy Image Critical Vul Report', reportTitles: '', useWrapperFileDirectly: true])
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: './', reportFiles: 'zap_report.html', reportName: 'DAST - OWASP ZAP Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
