@@ -384,7 +384,7 @@ EOF
 //                     # Commit and push
 //                     git add gitops/kubernetes/deployment.yml
 //                     git commit -m "Update docker image to $GIT_COMMIT"
-//                     git push -u origin feature-$BUILD_IDs
+//                     git push -u origin feature-$BUILD_ID
 // '''
 
                 
