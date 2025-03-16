@@ -233,7 +233,7 @@ EOF
             sh '''
               rm -rf /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-*
             # Fix Git Safe Directory Issue
-            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
+            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-13
             # Ensure the latest changes are fetched
             git checkout main
             git pull origin main  # Pull latest changes to avoid conflicts
@@ -242,8 +242,8 @@ EOF
              echo "New branch created: feature-$BUILD_ID"
             pwd
             # Replace Docker Tag
-            cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
-            cd /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes
+            cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-13/kubernetes/deployment.yml
+            cd /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-13/kubernetes
             # old-code with old tag  sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yml
             sed -i "s|thevenusian/solar:[a-f0-9]\\{40\\}|thevenusian/solar:$GIT_COMMIT|g" deployment.yml
 
