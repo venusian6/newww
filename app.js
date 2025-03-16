@@ -39,24 +39,18 @@ const dataSchema = new Schema({
   distance: String,
 });
 
-// Define Model
 const planetModel = mongoose.model("planets", dataSchema);
 
 // POST route to get planet data
 app.post("/planet", async (req, res) => {
   try {
-    // Log the ID (you can remove this if not necessary)
-    // console.log("Received Planet ID " + req.body.id);
-
-    // Use async/await to fetch planet data by ID
     const planetData = await planetModel.findOne({ id: req.body.id });
 
-    // If no planet data is found, send an appropriate message
     if (!planetData) {
       return res.status(404).send("No planet found with the given ID");
     }
 
-    res.send(planetData); // Send the found planet data as the response
+    res.send(planetData);
   } catch (err) {
     console.error("Error in fetching planet data: ", err);
     res.status(500).send("Error in Planet Data");
