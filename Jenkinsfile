@@ -268,7 +268,7 @@ EOF
             // git remote set-url origin https://$GITHUB_TOKEN@github.com/venusian6/gitops.git
             // git add .
             // git commit -m "Update docker image"
-            // git push -u origin feature-$BUILD_ID
+            // git push -u origin feature-$BUILD_IDs
         }
 
             }
