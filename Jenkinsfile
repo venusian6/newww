@@ -378,7 +378,7 @@ EOF
 //                         exit 1
 //                     fi
 
-//                     # Update image tag in deployment.yaml
+//                     # Update image tag in deployment.yaml -
 //                     sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" gitops/kubernetes/deployment.yml
 
 //                     # Commit and push
