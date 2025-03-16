@@ -223,22 +223,27 @@ EOF
                 branch 'PR*'
             }
             steps{
+                sh 'echo "Current Workspace:"'
+                sh 'ls -l /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-*'
             git url: 'https://github.com/venusian6/gitops.git', branch: 'main'
 
             sh 'pwd'
 
             dir('gitops/kubernetes') {
             sh '''
+             
             # Fix Git Safe Directory Issue
-            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8
+            git config --global --add safe.directory /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-13
             # Ensure the latest changes are fetched
             git checkout main
             git pull origin main  # Pull latest changes to avoid conflicts
+             echo "Current BUILD_ID: $BUILD_ID"
             git checkout -b feature-$BUILD_ID
+             echo "New branch created: feature-$BUILD_ID"
             pwd
             # Replace Docker Tag
-            cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes/deployment.yml
-            cd /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-8/kubernetes
+            cat /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-13/kubernetes/deployment.yml
+            cd /var/lib/jenkins/workspace/Solar-Multi-Branch_PR-13/kubernetes
             # old-code with old tag  sed -i "s#siddharth67/solar-system:v9.*#thevenusian/solar:$GIT_COMMIT#g" deployment.yml
             sed -i "s|thevenusian/solar:[a-f0-9]\\{40\\}|thevenusian/solar:$GIT_COMMIT|g" deployment.yml
 
@@ -258,6 +263,7 @@ EOF
 
             # Commit and push changes
             git commit -m "Update docker image"
+               git branch -a
             git push -u origin feature-$BUILD_ID
             sleep 5
 
