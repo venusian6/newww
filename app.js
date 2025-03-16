@@ -28,9 +28,9 @@ async function connectToDatabase() {
 connectToDatabase();
 
 // Define Schema
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var dataSchema = new Schema({
+const dataSchema = new Schema({
   name: String,
   id: Number,
   description: String,
@@ -40,7 +40,7 @@ var dataSchema = new Schema({
 });
 
 // Define Model
-var planetModel = mongoose.model("planets", dataSchema);
+const planetModel = mongoose.model("planets", dataSchema);
 
 // POST route to get planet data
 app.post("/planet", async (req, res) => {
